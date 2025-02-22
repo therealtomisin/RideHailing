@@ -16,8 +16,6 @@ export const authenticateAndAuthorize = (
 ): ((req: AuthRequest, res: Response, next: NextFunction) => void) => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.header("Authorization")?.split(" ")[1];
-    console.log("the token is >> ", token);
-    console.log("the jwt key is >> ", process.env.JWT_SECRET);
 
     if (!token) {
       return res
@@ -29,7 +27,6 @@ export const authenticateAndAuthorize = (
       // const decodedVariable = jwt.decode()
       const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
 
-      console.log("the decoded >> ", decoded);
       req.user = decoded as AuthenticatedUser;
 
       if (roles && !roles.includes(req.user.role)) {

@@ -4,11 +4,6 @@ export const distanceCalculator = (
 ): number => {
   const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
 
-  console.log({
-    riderCoordinates,
-    driverCoordinates,
-  });
-
   const R = 6371;
   const dLat = toRadians(
     driverCoordinates.latitude - riderCoordinates.latitude

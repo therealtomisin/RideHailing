@@ -56,7 +56,5 @@ export const login = async ({
     { expiresIn: "7d" }
   );
 
-  console.log("the token is >>> ", token);
-
   return token;
 };

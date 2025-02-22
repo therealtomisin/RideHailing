@@ -22,8 +22,8 @@ export const getMultipleRides = async (req: AuthRequest, res: Response) => {
 export const getRide = async (req: AuthRequest, res: Response) => {
   try {
     const queryParams = req.query;
-    const rider = req.params.id || req.user?.id;
-    const userRides = await getSingleRide({ ...queryParams, rider });
+    const id = req.params.id;
+    const userRides = await getSingleRide({ ...queryParams, id });
     res.status(200).json({ output: userRides });
   } catch (error: any) {
     res.status(501).json({ error: error.message });

@@ -116,10 +116,9 @@ export const getRides = async (query: IReadRide): Promise<IRide[]> => {
 
 export const getSingleRide = async (query: IReadRide): Promise<IRide> => {
   const ridesPayload = getRidesPayload(query);
-
-  console.log("mind games >> ", ridesPayload);
-
-  const singleRide = await Ride.findOne(ridesPayload);
+  const singleRide = await Ride.findOne({
+    ...(ridesPayload && { _id: ridesPayload.id }),
+  });
 
   if (!singleRide) throw new Error("No ride found!");
 
@@ -128,7 +127,7 @@ export const getSingleRide = async (query: IReadRide): Promise<IRide> => {
 
 export const updateRide = async (payload: IUpdateRide) => {
   const updatePayload = getRidesPayload(payload);
-  const currentRide = await Ride.findOne({ id: updatePayload.id });
+  const currentRide = await Ride.findOne({ _id: updatePayload.id });
 
   if (!currentRide) throw new Error("Ride does not exist!");
 
@@ -159,6 +158,10 @@ const updateRideStatus = async (
     currentRide.status !== "IN_PROGRESS"
   )
     throw new Error("Cannot complete a trip not in progress!");
+
+  if (currentRide.status !== "PENDING" && !currentRide.driver) {
+    throw new Error("Update not allowed!");
+  }
 
   const updatedRide = await Ride.findOneAndUpdate(
     { _id: updatePayload.id },
@@ -206,7 +209,7 @@ const getRidesPayload = ({
   return {
     ...(id &&
       isValidObjectId(id as string) && {
-        _id: new mongoose.Types.ObjectId(id),
+        id: new mongoose.Types.ObjectId(id),
       }),
     ...(status && { status }),
     ...(rider &&

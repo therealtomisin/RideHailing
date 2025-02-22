@@ -27,9 +27,13 @@ const dropoffLocation = Joi.object({
   }),
   address: Joi.string().optional(),
 });
-const status = Joi.string()
-  .required()
-  .valid("PENDING", "ACCEPTED", "IN_PROGRESS", "COMPLETED", "CANCELLED");
+const status = Joi.string().valid(
+  "PENDING",
+  "ACCEPTED",
+  "IN_PROGRESS",
+  "COMPLETED",
+  "CANCELLED"
+);
 
 export default {
   createRide: Joi.object().keys({
