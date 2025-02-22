@@ -4,7 +4,7 @@ export const postLogin = async (req: Request, res: Response) => {
   try {
     const { email, password, role } = req.body;
     const loginUser = await login({ email, password, role });
-    res.status(200).json({ message: loginUser });
+    res.status(200).json({ token: loginUser });
   } catch (error: any) {
     console.error("Login Error:", error);
 
